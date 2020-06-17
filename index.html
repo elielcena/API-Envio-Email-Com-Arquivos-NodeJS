@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>FrontEnd</title>
+
+  <style>
+  
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto;
+      padding: 10px;
+    }
+
+    .grid-item {
+      padding: 20px;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    #loader {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 1;
+      width: 150px;
+      height: 150px;
+      margin: -75px 0 0 -75px;
+      border: 10px solid #999999;
+      border-radius: 50%;
+      border-top: 10px solid #006699;
+      width: 120px;
+      height: 120px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1> Preenche o Formulário </h1>
+
+    <!-- formulário simples com inputs para capturar os dados e um botão de submit para envio -->
+    <form id="form" onsubmit="sendEmailAPI(event,this);" enctype="multipart/form-data" class="grid-container"> 
+
+      <input type="text" id="nomecompleto"
+        name="nomecompleto" placeholder="Nome Completo"
+        required class="grid-item">
+
+      <input type="email" id="email" name="email"
+        placeholder="Seu E-Mail"
+        required class="grid-item">
+
+      <input type="number" id="cpf" name="cpf"
+        placeholder="CPF" required
+        required class="grid-item">
+
+      <input type="number" id="telefone" name="telefone"
+        placeholder="Telefone"
+        required class="grid-item">     
+
+      <input type="text" id="cargo" name="cargo"
+        placeholder="Cargo"
+        required class="grid-item">
+
+      <input type="file" name="fileToUpload" id="fileToUpload" class="grid-item">
+
+      <button type="submit" class="grid-item">
+        ENVIAR
+      </button>
+
+      <div id="loader"></div>
+
+    </form>
+
+  </div>
+                                                  
+  <script type='text/javascript'>
+
+    // função javascript que faz envio post para API
+    function sendEmailAPI(event, form) {
+      // não deixa que a pagina html de um reload após fazer o submit
+      event.preventDefault();
+
+      // faz com que o loader apareça na tela
+      document.getElementById("loader").style.display = "block";
+      
+      // URL da api para enviar requisição POST
+      const URL = 'http://192.168.16.165:8181/sendEmail';
+
+      // nome do arquivo (pdf)
+      const fileName = form.cpf.value + '-' + form.nomecompleto.value.replace(" ", "-") + '-' + 'Curriculo.pdf';
+
+      // objeto FormData para enviar como body de multipart/form
+      const formData = new FormData();
+
+      // capturando dados do formulario e atribuindo no objeto
+      formData.append('file', form.fileToUpload.files[0], fileName);
+      formData.append("nomecompleto", form.nomecompleto.value);
+      formData.append("email", form.email.value);
+      formData.append("telefone", form.telefone.value);
+      formData.append("cpf", form.cpf.value);
+      formData.append("cargo", form.cargo.value);
+      
+      // enviando requisição ajax POST com FETCH API
+      fetch(URL, {
+        method: 'POST',
+        body: formData
+      })
+      // caso sucesso (then) faz com o loarder se esconda e mostre um alerta com sucesso
+      .then(function (response) {
+          document.getElementById("loader").style.display = "none";
+          alert("CURRICULO ENVIADO COM SUCESSO!");
+      })
+      // caso erro (catch) faz com o loarder se esconda e mostre um alerta com erro
+      .catch(function (err) {
+          document.getElementById("loader").style.display = "none";
+          alert("ERRO AO ENVIAR CURRICULO: " + err);
+      });
+    }
+
+  </script>  
+
+</body>
+
+</html>

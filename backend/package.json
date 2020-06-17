@@ -1,0 +1,21 @@
+{
+  "name": "api-email",
+  "version": "1.0.0",
+  "description": "API para envio de email com arquivos",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eliel Cena",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
