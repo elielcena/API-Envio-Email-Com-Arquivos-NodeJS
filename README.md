@@ -33,6 +33,8 @@ Contexto de REMETENTE & DESTINATARIO.
   - linha 31
 - configure o 'TO' para quem chegará esses emails
   - linha 33
+- configure a URL da API com o devido dominio/ip no arquivo index.html
+  - linha 121
 
 ### Observação Importante (ATENÇÃO!!!)
 
